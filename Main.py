@@ -42,13 +42,14 @@ print(objectToWrite)
 # Write to file number name
 for entry in listTables:
     if objectToWrite in entry:
-        table = pd.read_excel(f'Files/{entry}', engine='xlrd')
-        print(table)
-        new_row = pd.DataFrame({'Date': [datetime.datetime.now()], 'Text': [textToWrite]})
-        table = table.append(new_row, ignore_index=True)
-        print(table)
-        table.to_excel(f'Files/{entry}', index=False)
+        path = os.path.join("Files", entry)
+        if os.path.exists(path):
+            table = pd.read_excel(io=path, engine='xlrd')
+            print(table)
+            new_row = pd.DataFrame({'Date': [datetime.datetime.now()], 'Text': [textToWrite]})
+            table = table.append(new_row, ignore_index=True)
+            print(table)
+            table.to_excel(path, index=False)
+        else:
+            print(f"{path} does not exist")
         pass
-
-table = pd.read_excel(f'Files/{entry}', header=None)
-print(table)
